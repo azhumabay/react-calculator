@@ -36,13 +36,31 @@ export default function Calculator() {
     dispatch({ type: "SUBTRACT" });
   };
 
+  const handleAddDecimal = () => {
+    dispatch({ type: "ADD_DECIMAL" });
+  };
+
+  const handlePercentage = () => {
+    dispatch({ type: "PERCENTAGE" });
+  };
+
+  const handleToggleSign = () => {
+    dispatch({ type: "TOGGLE_SIGN" });
+  };
+
+  const handleDelete = () => {
+    dispatch({ type: "DELETE_LAST_DIGIT" });
+  };
+
   return (
     <StyledCalculator>
       <Input>{state.currentValue}</Input>
       <ButtonGroup>
         <SecondaryButton onClick={() => handleClear()}>C</SecondaryButton>
-        <SecondaryButton>+/-</SecondaryButton>
-        <SecondaryButton>%</SecondaryButton>
+        <SecondaryButton onClick={() => handleToggleSign()}>
+          +/-
+        </SecondaryButton>
+        <SecondaryButton onClick={() => handlePercentage()}>%</SecondaryButton>
         <BlueButton onClick={() => handleDivide()}>÷</BlueButton>
 
         <PrimaryButton onClick={() => handleAddDigit(7)}>7</PrimaryButton>
@@ -60,9 +78,9 @@ export default function Calculator() {
         <PrimaryButton onClick={() => handleAddDigit(3)}>3</PrimaryButton>
         <BlueButton onClick={() => dispatch({ type: "ADD" })}>+</BlueButton>
 
-        <PrimaryButton>.</PrimaryButton>
-        <PrimaryButton>0</PrimaryButton>
-        <PrimaryButton>&larr;</PrimaryButton>
+        <PrimaryButton onClick={() => handleAddDecimal()}>.</PrimaryButton>
+        <PrimaryButton onClick={() => handleAddDigit(0)}>0</PrimaryButton>
+        <PrimaryButton onClick={() => handleDelete()}>&larr;</PrimaryButton>
         <BlueButton onClick={() => handleCalculate()}>=</BlueButton>
       </ButtonGroup>
     </StyledCalculator>

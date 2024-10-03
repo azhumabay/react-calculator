@@ -1,15 +1,8 @@
-// Действия для работы с калькулятором
-// export const SET_VALUE = "SET_VALUE"; // Установка значения
-// export const ADD = "ADD"; // Сложение
-// export const SUBTRACT = "SUBTRACT"; // Вычитание
-// export const MULTIPLY = "MULTIPLY"; // Умножение
-// export const DIVIDE = "DIVIDE"; // Деление
-// export const CLEAR = "CLEAR"; // Сброс
-
 const initialState = {
   currentValue: 0,
   previousValue: null,
   operation: null,
+  num: 0,
 };
 
 const calculatorReducer = (state, action) => {
@@ -20,27 +13,78 @@ const calculatorReducer = (state, action) => {
         currentValue: 0,
         previousValue: null,
         operation: null,
+        num: null,
       };
     case "SUBTRACT":
       return {
         ...state,
         previousValue: state.currentValue,
         operation: "SUBTRACT",
+        num: 1,
       };
     case "MULTIPLY":
-      return { ...state, operation: "MULTIPLY" };
-    case "DIVIDE":
-      return { ...state, operation: "DIVIDE" };
-    case "ADD":
-      return { ...state, operation: "ADD" };
-    case "ADD_DIGIT":
       return {
         ...state,
-        currentValue: Number(`${state.currentValue}${action.payload}`),
+        previousValue: state.currentValue,
+        operation: "MULTIPLY",
+        num: 1,
+      };
+    case "DIVIDE":
+      return {
+        ...state,
+        previousValue: state.currentValue,
+        operation: "DIVIDE",
+        num: 1,
+      };
+    case "ADD":
+      return {
+        ...state,
+        previousValue: state.currentValue,
+        operation: "ADD",
+        num: 1,
+      };
+    case "ADD_DIGIT":
+      if (state.num === 1) {
+        return {
+          ...state,
+          currentValue: action.payload,
+          num: 0,
+        };
+      } else {
+        return {
+          ...state,
+          currentValue: Number(`${state.currentValue}${action.payload}`),
+        };
+      }
+
+    case "ADD_DECIMAL":
+      if (state.currentValue.toString().includes(".")) {
+        return state;
+      }
+      return {
+        ...state,
+        currentValue: `${state.currentValue}.`,
+      };
+
+    case "PERCENTAGE":
+      return {
+        ...state,
+        currentValue: state.currentValue / 100,
+      };
+
+    case "TOGGLE_SIGN":
+      return {
+        ...state,
+        currentValue: state.currentValue * -1,
+      };
+
+    case "DELETE_LAST_DIGIT":
+      return {
+        ...state,
+        currentValue: state.currentValue.toString().slice(0, -1) || "0",
       };
 
     case "CALCULATE_RESULT":
-      console.log(state);
       if (state.operation === null) {
         return state;
       }
@@ -59,7 +103,7 @@ const calculatorReducer = (state, action) => {
 
       return {
         ...state,
-        currentValue: result,
+        currentValue: parseFloat(result.toFixed(5)),
         previousValue: null,
       };
     default:

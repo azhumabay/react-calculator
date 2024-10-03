@@ -4,12 +4,20 @@ export const StyledCalculator = styled.div`
   margin-top: 175px;
   width: 728px;
   background-color: inherit;
+
+  @media screen and (max-width: 728px) {
+    width: 100%;
+  }
 `;
 
 export const ButtonGroup = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 16px;
+
+  @media screen and (max-width: 728px) {
+    gap: 8px;
+  }
 
   button {
     height: 72px;
@@ -60,8 +68,9 @@ export const PrimaryButton = styled.button`
 
 export const Input = styled.div`
   color: #fff;
-  direction: rtl;
+  text-align: right;
   font-size: 96px;
   font-weight: 100;
   margin-bottom: 16px;
+  overflow-x: hidden;
 `;
